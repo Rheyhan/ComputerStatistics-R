@@ -14,12 +14,16 @@ library(raster)
 #initugas
 #1-----------------------------------------------------
   #class making
+setGeneric("jumlah_sisi", function(object){
+  standardGeneric("jumlah_sisi")
+})
 setClass("BangunDatar")
 setClass("Lingkaran", representation(jari_jari="numeric"),
          contains = "BangunDatar")
 
 setClass("Poligon", representation(jumlah_sisi="integer"),
          contains = "BangunDatar")
+
 setClass("Persegi", representation(panjang="numeric", 
                                    lebar="numeric"),
          contains = "Poligon")
@@ -27,10 +31,23 @@ setClass("Segitiga", representation(alas="numeric",
                                     tinggi="numeric"),
          contains = "Poligon")
 
-  #assigning dummy
-inisegitiga<-new("Segitiga", alas=5, tinggi=3, jumlah_sisi=as.integer(3))
+  #Setgeneric ande method for 'jumlah_sisi' segitiga == 3 and persegi == 4
+setMethod("jumlah_sisi", "Segitiga", function(object){
+  object@jumlah_sisi <-as.integer(3)
+  object
+})
+setMethod("jumlah_sisi", "Persegi", function(object){
+  object@jumlah_sisi <-as.integer(4)
+  object
+})
+
+  #dummies
+inisegitiga<-new("Segitiga", alas=5, tinggi=3)
+jumlah_sisi(inisegitiga)
+inipersegi<-new("Persegi", panjang=12, lebar=6)
+jumlah_sisi(inipersegi)
 inilingkaran<-new("Lingkaran", jari_jari=7)
-inipersegi<-new("Persegi", panjang=12, lebar=6, jumlah_sisi=as.integer(4))
+
   #creating show() methode
 setMethod("show", "Segitiga",
           function(object){
